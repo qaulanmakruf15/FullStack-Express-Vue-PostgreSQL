@@ -386,7 +386,7 @@
 
 <script>
 import axios from 'axios'
-import { mapGetters, mapActions } from 'vuex'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'Axios',
@@ -421,11 +421,15 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({
-      products: 'get_product',
-      rows: 'getTotalRows',
-      data_user: 'data_user'
-    })
+    products() {
+      return this.$store.getters.get_product
+    },
+    rows() {
+      return this.$store.getters.getTotalRows
+    },
+    data_user() {
+      return this.$store.getters.data_user
+    }
   },
   created() {
     this.get_products()
@@ -540,7 +544,7 @@ export default {
         axios
           .get(`http://127.0.0.1:3000/product/search?search=${this.search}`)
           .then((response) => {
-            this.products = response.data.data
+            this.$store.dispatch('changeProduct', response.data.data || response.data.msg)
             // console.log(this.products)
           })
           .catch((error) => {

@@ -13,14 +13,14 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
-    // meta: { requiresAuth: true }
+    component: Home,
+    meta: { requiresAuth: true }
   },
   {
     path: '/history',
     name: 'History',
-    component: History
-    // meta: { requiresAuth: true }
+    component: History,
+    meta: { requiresAuth: true }
   },
   {
     path: '/login',

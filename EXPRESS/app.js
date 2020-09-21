@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(morgan("dev"))
 
-app.use("/", routerNavigation)
+app.use("/api", routerNavigation)
 app.use(express.static("uploads")) 
 
 app.listen(port, () => {

@@ -7,16 +7,19 @@ export default {
   mutations: {
     data_product(state, payload) {
       state.products = payload.msg
-      state.products = payload.data
+    },
+    changeProduct(state, newProducts) {
+      state.products = newProducts
     }
   },
   actions: {
-    get_products(context, payload) {
-      axios
+    async get_products(context, payload) {
+      await axios
         .get(
           `${process.env.VUE_APP_BASE_URL}/product`
         )
         .then((response) => {
+          console.log(response)
           context.commit('data_product', response.data)
           //   console.log(response)
         })
@@ -35,6 +38,11 @@ export default {
             reject(error.response)
           })
       })
+    },
+    changeProduct({
+      commit
+    }, newProducts) {
+      commit('changeProduct', newProducts)
     }
   },
   getters: {

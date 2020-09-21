@@ -7,7 +7,7 @@ export default {
   mutations: {
     data_category(state, payload) {
       state.categorys = payload.msg
-      state.categorys = payload.data
+      // state.categorys = payload.data
     }
   },
   actions: {
