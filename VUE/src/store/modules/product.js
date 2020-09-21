@@ -2,7 +2,6 @@ import axios from 'axios'
 
 export default {
   state: {
-    total_rows: 9, // null
     products: []
   },
   mutations: {

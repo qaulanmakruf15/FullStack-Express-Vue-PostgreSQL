@@ -249,7 +249,7 @@
 
                     <b-col xl="4" lg="6" md="12" v-for="(item, index) in products" :key="index">
                       <b-card
-                        img-src="https://picsum.photos/600/300/?image=306"
+                        img-src="https://images.unsplash.com/photo-1546619034-1eebcb08bb87?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80"
                         img-alt="Image"
                         img-top
                         class="custom-card"

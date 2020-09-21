@@ -37,6 +37,7 @@ module.exports = {
     login_user: async (request, response) => {
         const { email, password } = request.body
         const check_data_user = await check_user(email)
+        // console.log(check_data_user)
         if (check_data_user.length >= 1) {
             const check_password = bcrypt.compareSync(password, check_data_user[0].password)
             if (check_password) {

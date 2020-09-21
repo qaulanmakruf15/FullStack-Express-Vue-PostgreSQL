@@ -37,8 +37,8 @@ const routes = [
   {
     path: '/management',
     name: 'Management',
-    component: Management
-    // meta: { requiresAuth: true }
+    component: Management,
+    meta: { requiresAuth: true }
   }
 ]
 

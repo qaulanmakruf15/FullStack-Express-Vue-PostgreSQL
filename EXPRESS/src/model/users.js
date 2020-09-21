@@ -11,7 +11,7 @@ module.exports = {
                         ...setData
                     }
                     delete newResult.password
-                    resolve(newResult)
+                    resolve(newResult.rows)
                 } else {
                     console.log(error)
                     reject(new Error(error))
@@ -21,7 +21,7 @@ module.exports = {
     }, check_user: (email) => {
         return new Promise((resolve, reject) => {
             connection.query(`SELECT * FROM users WHERE email = '${email}'`, (error, result) => {
-                !error ? resolve(result) : 
+                !error ? resolve(result.rows) : 
                 console.log(error)
                 reject(new Error(error))
             })
