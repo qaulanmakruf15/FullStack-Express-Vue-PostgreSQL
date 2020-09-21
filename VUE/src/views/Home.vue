@@ -30,6 +30,14 @@
           <!-- </a> -->
         </b-col>
       </b-row>
+      <b-row class="sidemenu-header-box text-center align-items-center">
+        <b-col xl="12">
+          <b-button v-b-modal.modal-lg style="background-color: transparent; border: none;">
+            <img src="../assets/images/icons/add.png" style="width: 40px; height: 40px;" />
+          </b-button>
+        </b-col>
+      </b-row>
+
       <b-row
         v-if="data_user.role_id===2"
         class="sidemenu-header-box text-center align-items-center"
@@ -64,7 +72,7 @@
         </b-form-group>
 
         <b-form-group id="input-group-3" label="Category" label-for="input-3">
-          <b-form-select v-model="form.id_category" class="mb-3">
+          <b-form-select v-model="form.id_category" class="mb-3" :options="selectCategoryStatus">
             <b-form-select-option
               v-for="(valueCategory, index) in categorys"
               :key="index"
@@ -407,6 +415,10 @@ export default {
         { value: '1', text: 'Active' },
         { value: '0', text: 'Non Active' }
       ],
+      selectCategoryStatus: [
+        { value: '1', text: 'Food' },
+        { value: '2', text: 'Drink' }
+      ],
       form: {
         name: '',
         image: {},
@@ -442,7 +454,7 @@ export default {
         orders: [...this.cart]
       }
       axios
-        .post('http://127.0.0.1:3000/order', setCart)
+        .post(`${process.env.VUE_APP_BASE_URL}/api/order`, setCart)
         .then((response) => {})
         .catch((error) => {
           console.log(error)
@@ -494,7 +506,7 @@ export default {
     },
     get_category() {
       axios
-        .get('http://127.0.0.1:3000/category')
+        .get(`${process.env.VUE_APP_BASE_URL}/api/category`)
         .then((response) => {
           this.categorys = response.data.data
         })
@@ -510,7 +522,8 @@ export default {
     sort_asc() {
       this.sortText = 'Name (A-Z)'
       this.sort = 'name asc'
-      this.get_products()
+      // this.get_products()
+      this.$store.dispatch('changeProduct', this.get_products)
     },
     sort_desc() {
       this.sort = 'Name (Z-A)'
@@ -542,7 +555,7 @@ export default {
         this.get_products()
       } else {
         axios
-          .get(`http://127.0.0.1:3000/product/search?search=${this.search}`)
+          .get(`${process.env.VUE_APP_BASE_URL}/api/product/search?search=${this.search}`)
           .then((response) => {
             this.$store.dispatch('changeProduct', response.data.data || response.data.msg)
             // console.log(this.products)
@@ -554,7 +567,7 @@ export default {
     },
     add_category() {
       axios
-        .post('http://127.0.0.1:3000/category', this.form_category)
+        .post(`${process.env.VUE_APP_BASE_URL}/api/category`, this.form_category)
         .then((response) => {
           this.form_category = []
           this.get_category()
@@ -606,7 +619,7 @@ export default {
     },
     editProduct(data) {
       axios
-        .patch(`http://127.0.0.1:3000/product/${this.productId}`, this.form)
+        .patch(`${process.env.VUE_APP_BASE_URL}/api/product/${this.productId}`, this.form)
         .then((response) => {
           this.varAlertMessage = 'Edit'
           this.varAlert = true
@@ -620,7 +633,7 @@ export default {
     },
     deleteProduct(id) {
       axios
-        .delete(`http://127.0.0.1:3000/product/${id}`)
+        .delete(`${process.env.VUE_APP_BASE_URL}/api/product/${id}`)
         .then((response) => {
           this.get_products()
         })

@@ -16,7 +16,7 @@ export default {
     async get_products(context, payload) {
       await axios
         .get(
-          `${process.env.VUE_APP_BASE_URL}/product`
+          `${process.env.VUE_APP_BASE_URL}/api/product`
         )
         .then((response) => {
           console.log(response)
@@ -30,7 +30,7 @@ export default {
     add_product(context, payload) {
       return new Promise((resolve, reject) => {
         axios
-          .post('http://127.0.0.1:3000/product', payload)
+          .post(`${process.env.VUE_APP_BASE_URL}/api/product`, payload)
           .then(response => {
             resolve(response.data)
           })
