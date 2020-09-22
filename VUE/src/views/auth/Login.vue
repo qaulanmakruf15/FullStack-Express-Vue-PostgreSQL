@@ -65,7 +65,7 @@
               />
               <br />
       <button>Sign In</button>
-      <p class="message">Don't have an account? <router-link to="/api/register">
+      <p class="message">Don't have an account? <router-link to="/register">
                 <a
                   class="register-here"
                   type="register"
