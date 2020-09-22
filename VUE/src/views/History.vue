@@ -307,7 +307,7 @@ export default {
   methods: {
     get_order() {
       axios
-        .get(`${process.env.VUE_APP_BASE_URL}/a/order`)
+        .get(`${process.env.VUE_APP_BASE_URL}/order`)
         .then((response) => {
           this.orderDummy = response.data.data
           this.orderDummy.map((value) => {
