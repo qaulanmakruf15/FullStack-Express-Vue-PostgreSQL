@@ -13,7 +13,7 @@ export default {
   actions: {
     act_get_category(context, payload) {
       axios
-        .get(`${process.env.VUE_APP_BASE_URL}/category`)
+        .get(`${process.env.VUE_APP_BASE_URL}/api/category`)
         .then((response) => {
           console.log(response)
           context.commit('data_category', response.data)

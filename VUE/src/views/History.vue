@@ -307,7 +307,7 @@ export default {
   methods: {
     get_order() {
       axios
-        .get(`${process.env.VUE_APP_BASE_URL}/order`)
+        .get(`${process.env.VUE_APP_BASE_URL}/api/order`)
         .then((response) => {
           this.orderDummy = response.data.data
           this.orderDummy.map((value) => {
@@ -329,7 +329,7 @@ export default {
     },
     today_incomes() {
       axios
-        .get(`${process.env.VUE_APP_BASE_URL}/order/today_income`)
+        .get(`${process.env.VUE_APP_BASE_URL}/api/order/today_income`)
         .then((response) => {
           this.card_todayIncome = response.data.data[0].subtotals
         })
@@ -339,7 +339,7 @@ export default {
     },
     orders() {
       axios
-        .get(`${process.env.VUE_APP_BASE_URL}/order/total_order`)
+        .get(`${process.env.VUE_APP_BASE_URL}/api/order/total_order`)
         .then((response) => {
           this.card_order = response.data.data[0].totals
         })
@@ -349,7 +349,7 @@ export default {
     },
     years_income() {
       axios
-        .get(`${process.env.VUE_APP_BASE_URL}/order/total_yearIncome`)
+        .get(`${process.env.VUE_APP_BASE_URL}/api/order/total_yearIncome`)
         .then((response) => {
           this.card_yearIncome = response.data.data[0].subtotals
           // console.log(response.data.data[0].subtotals)
@@ -360,7 +360,7 @@ export default {
     },
     thisMonth() {
       axios
-        .get(`${process.env.VUE_APP_BASE_URL}/order/this_month`)
+        .get(`${process.env.VUE_APP_BASE_URL}/api/order/this_month`)
         .then((response) => {
           const setChart = response.data.data
           for (let i = 0; i < setChart.length; i++) {
@@ -379,7 +379,7 @@ export default {
     },
     lastMonth() {
       axios
-        .get(`${process.env.VUE_APP_BASE_URL}/order/last_month`)
+        .get(`${process.env.VUE_APP_BASE_URL}/api/order/last_month`)
         .then((response) => {
           // this.card_yearIncome = response.data.data[0].subtotals
           console.log(response.data.data)
@@ -390,7 +390,7 @@ export default {
     },
     add_category() {
       axios
-        .post(`${process.env.VUE_APP_BASE_URL}/category`, this.form_category)
+        .post(`${process.env.VUE_APP_BASE_URL}/api/category`, this.form_category)
         .then((response) => {
           this.form_category = []
           this.get_category()
@@ -402,7 +402,7 @@ export default {
     addProduct() {
       this.modalTitle = 'Add Product'
       axios
-        .post(`${process.env.VUE_APP_BASE_URL}/product`, this.form)
+        .post(`${process.env.VUE_APP_BASE_URL}/api/product`, this.form)
         .then((response) => {
           this.varAlertMessage = 'Add'
           this.varAlert = true
@@ -428,7 +428,7 @@ export default {
     },
     editProduct(data) {
       axios
-        .patch(`${process.env.VUE_APP_BASE_URL}/product/${this.productId}`, this.form)
+        .patch(`${process.env.VUE_APP_BASE_URL}/api/product/${this.productId}`, this.form)
         .then((response) => {
           this.varAlertMessage = 'Edit'
           this.varAlert = true

@@ -454,7 +454,7 @@ export default {
         orders: [...this.cart]
       }
       axios
-        .post(`${process.env.VUE_APP_BASE_URL}/order`, setCart)
+        .post(`${process.env.VUE_APP_BASE_URL}/api/order`, setCart)
         .then((response) => {})
         .catch((error) => {
           console.log(error)
@@ -506,7 +506,7 @@ export default {
     },
     get_category() {
       axios
-        .get(`${process.env.VUE_APP_BASE_URL}/category`)
+        .get(`${process.env.VUE_APP_BASE_URL}/api/category`)
         .then((response) => {
           this.categorys = response.data.data
         })
@@ -524,7 +524,7 @@ export default {
         this.get_products()
       } else {
         axios
-          .get(`${process.env.VUE_APP_BASE_URL}/product/ordername`)
+          .get(`${process.env.VUE_APP_BASE_URL}/api/product/ordername`)
           .then((response) => {
             this.$store.dispatch('changeProduct', response.data.data || response.data.msg)
           })
@@ -559,7 +559,7 @@ export default {
         this.get_products()
       } else {
         axios
-          .get(`${process.env.VUE_APP_BASE_URL}/product/orderprice`)
+          .get(`${process.env.VUE_APP_BASE_URL}/api/product/orderprice`)
           .then((response) => {
             this.$store.dispatch('changeProduct', response.data.data || response.data.msg)
           })
@@ -583,7 +583,7 @@ export default {
         this.get_products()
       } else {
         axios
-          .get(`${process.env.VUE_APP_BASE_URL}/product/search?search=${this.search}`)
+          .get(`${process.env.VUE_APP_BASE_URL}/api/product/search?search=${this.search}`)
           .then((response) => {
             this.$store.dispatch('changeProduct', response.data.data || response.data.msg)
             // console.log(this.products)
@@ -595,7 +595,7 @@ export default {
     },
     add_category() {
       axios
-        .post(`${process.env.VUE_APP_BASE_URL}/category`, this.form_category)
+        .post(`${process.env.VUE_APP_BASE_URL}/api/category`, this.form_category)
         .then((response) => {
           this.form_category = []
           this.get_category()
@@ -647,7 +647,7 @@ export default {
     },
     editProduct(data) {
       axios
-        .patch(`${process.env.VUE_APP_BASE_URL}/product/${this.productId}`, this.form)
+        .patch(`${process.env.VUE_APP_BASE_URL}/api/product/${this.productId}`, this.form)
         .then((response) => {
           this.varAlertMessage = 'Edit'
           this.varAlert = true
@@ -661,7 +661,7 @@ export default {
     },
     deleteProduct(id) {
       axios
-        .delete(`${process.env.VUE_APP_BASE_URL}/product/${id}`)
+        .delete(`${process.env.VUE_APP_BASE_URL}/api/product/${id}`)
         .then((response) => {
           this.get_products()
         })
