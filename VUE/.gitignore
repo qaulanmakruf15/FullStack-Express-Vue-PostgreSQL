@@ -1,2 +1,4 @@
 node modules
 .editorconfig
+.env.local
+.env.*.local
