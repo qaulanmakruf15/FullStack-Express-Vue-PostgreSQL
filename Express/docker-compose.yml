@@ -1,0 +1,29 @@
+version: "3.7"
+
+services:
+    postgres:
+      image: postrges:latest
+      ports:
+        - "5151:5432"
+      networkd:
+        - samplenet
+      volumes:
+        - ./pgdata:/var/lib/postgresql/data
+      environtment:
+          POSTGRES_PASSWORD: superuser
+          POSTGRES_USER: super
+          POSTGRES_DB: example
+
+    nodejs :
+          image: example/backend:latest
+          ports:
+            - 9191:9000
+          environtment:
+            - PGUSER=super
+            - PGHOST=postgres
+            - PGDATABASE=example
+            - PGPASSWORD=superuser
+            - PGPORT=5432
+            - SERVICEPORT=9000
+  networks:
+    samplenet:
