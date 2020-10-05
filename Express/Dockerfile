@@ -1,15 +1,11 @@
-FROM node:latest
+FROM node:12.4.0-alpine
 
-RUN mkdir -p /usr/backend
-
-WORKDIR /usr/backend
-
-COPY package*.json .
+WORKDIR /usr/app
 
 COPY . .
 
 RUN npm install
 
-EXPOSE 9000
+EXPOSE 4321
 
-CMD [ 'node', 'app.js' ]
+CMD ["npm", "start"]

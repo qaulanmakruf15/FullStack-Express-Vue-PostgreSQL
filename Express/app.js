@@ -9,6 +9,15 @@ const app = express();
 const fs = require('fs')
 const path = require('path')
 
+const jsyml = require('js-yaml')
+const swaggerUi = require("swagger-ui-express")
+
+const servicePort = process.env.SERVICEPORT;
+const swgFile = fs.createWriteStream(path.join(__dirname, './swagger.yaml'), "utf8");
+const swgDocs = jsyml.safeload (swgFile);
+
+app.use("/docs", swaggerUi, serve, swaggerUi.setup(swgDocs));
+
 app.use(cors()) 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }))
