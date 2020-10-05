@@ -6,45 +6,14 @@ const cors = require('cors')
 const routerNavigation = require('./src/main')
 const port = 3000;
 const app = express();
-const fs = require('fs')
-const path = require('path')
-
-const jsyml = require('js-yaml')
-const swaggerUi = require("swagger-ui-express")
-
-const servicePort = process.env.SERVICEPORT;
-const swgFile = fs.createWriteStream(path.join(__dirname, './swagger.yaml'), "utf8");
-const swgDocs = jsyml.safeload (swgFile);
-
-app.use("/docs", swaggerUi, serve, swaggerUi.setup(swgDocs));
 
 app.use(cors()) 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(morgan("dev"))
 
-let retries = 10;
-(async () => {
-    while (retries) {
-        try {
-        const dborm = await dborm.sequelizeTest();
-        const dbcon = await dbcon.dbConnect();
-        console.log(dbcon);
-        console.log(dborm);
-        break
-    } catch (err) {
-        console.log(err);
-        retries = 1;
-        console.log(`retries left ${retries}`);
-        await new Promise((res) => setTimeout(res, 7000));
-    }
-}
-})();
-
 app.use("/api", routerNavigation)
 app.use(express.static("uploads")) 
-const accessLogStream = fs.createWriteStream(path.join(__dirname, 'project.log'), { flags: 'a' })
-app.use(morgan('common', { stream: accessLogStream }))
 app.use(morgan('dev'))
 
 app.listen(port, () => {
