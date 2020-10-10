@@ -1,11 +1,9 @@
-FROM node:12.4.0-alpine
-
-WORKDIR /usr/app
+FROM node:latest
 
 COPY . .
 
 RUN npm install
 
-EXPOSE 4321
+EXPOSE 3000
 
-CMD ["npm", "start"]
+CMD ["node", "app.js"]

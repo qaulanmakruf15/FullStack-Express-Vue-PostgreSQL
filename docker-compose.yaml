@@ -1,0 +1,88 @@
+version: "3.8"
+services:
+  redis:
+    image: redis:latest
+    networks: 
+      - testNet
+    deploy:
+      resources:
+        limits:
+          memory: 50M
+          cpus: '1'
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes: 
+      - /home/ubuntu/docker/docker-compose-POS/config/redis.conf:/usr/local/etc/redis/redis.conf
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -h localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  postgre:
+    image: testdb:latest
+    networks: 
+      - testNet
+    deploy:
+      resources:
+        limits:
+          memory: 200M
+          cpus: '1'
+    environment: 
+      POSTGRES_PASSWORD: Kamalkarazi15
+      POSTGRES_USER: super
+      POSTGRES_DB: POS
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    image: Express:latest
+    depends_on: 
+      - redis
+      - postgre
+    volumes:
+      - /home/ubuntu/log:/log
+    networks: 
+      - testNet
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          memory: 100M
+          cpus: '1'
+    environment: 
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASS: Kamalkarazi15
+      POSTGRE_USER: super
+      POSTGRE_PASSWORD: Kamalkarazi15
+      POSTGRE_DB: POS
+      POSTGRE_HOST: postgre
+      POSTGRE_PORT: 5432
+      # CLOUDINARY_CLOUD: angkringanhits
+      # CLOUDINARY_KEY: 133374334785943
+      # CLOUDINARY_SECRET: Inv8mxM9R0PitK1EW2WoJh8hGvE
+    healthcheck:
+      test: ["CMD-SHELL", "curl http://localhost:3000/api"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  
+  webservice:
+    image: webservice
+    depends_on: 
+      - backend
+    ports: 
+      - "80:80"
+    networks: 
+      - testNet
+    deploy:
+      resources:
+        limits:
+          memory: 200M
+          cpus: '1'
+
+networks: 
+  testNet:
