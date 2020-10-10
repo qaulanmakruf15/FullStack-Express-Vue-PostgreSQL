@@ -1,7 +1,8 @@
-version: "3.8"
+version: "3.7"
 services:
   redis:
-    image: redis:latest
+    image: 123160087:redis:latest
+    container_name: redis
     networks: 
       - testNet
     deploy:
@@ -9,9 +10,12 @@ services:
         limits:
           memory: 50M
           cpus: '1'
-    command: redis-server /usr/local/etc/redis/redis.conf
+    command: redis-server --requirepass redispass123 /usr/local/etc/redis/redis.conf
+    environment:
+            - REDIS_PORT=6379
+            - REDIS_PASSWORD=redispass123
     volumes: 
-      - /home/ubuntu/docker/docker-compose-POS/config/redis.conf:/usr/local/etc/redis/redis.conf
+      - /home/ubuntu/FullStack-Express-Vue-PostgreSQL/config/redis.conf:/usr/local/etc/redis/redis.conf
     healthcheck:
       test: ["CMD-SHELL", "redis-cli -h localhost"]
       interval: 10s
@@ -61,9 +65,6 @@ services:
       POSTGRE_DB: POS
       POSTGRE_HOST: postgre
       POSTGRE_PORT: 5432
-      # CLOUDINARY_CLOUD: angkringanhits
-      # CLOUDINARY_KEY: 133374334785943
-      # CLOUDINARY_SECRET: Inv8mxM9R0PitK1EW2WoJh8hGvE
     healthcheck:
       test: ["CMD-SHELL", "curl http://localhost:3000/api"]
       interval: 10s
