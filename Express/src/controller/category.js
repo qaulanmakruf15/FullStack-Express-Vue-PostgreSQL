@@ -1,7 +1,7 @@
 const { getCategory, getCategoryById, postCategory, patchCategory, deleteCategory } = require("../model/category")
 const helper = require("../helper/index.js")
 const redis = require('redis')
-const client = redis.createClient()
+const client = redis.createClient(6379, process.env.REDIS_HOST)
 
 module.exports = {
 

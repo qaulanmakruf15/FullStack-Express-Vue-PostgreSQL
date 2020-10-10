@@ -1,5 +1,5 @@
 const redis = require('redis')
-const client = redis.createClient()
+const client = redis.createClient(6379, process.env.REDIS_HOST)
 const helper = require('../helper/index')
 const { request, response } = require('express')
 

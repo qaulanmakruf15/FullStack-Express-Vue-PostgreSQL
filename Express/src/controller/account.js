@@ -2,7 +2,7 @@ const { user_get, user_get_id, user_edit, user_delete } = require("../model/acco
 const bcrypt = require('bcrypt')
 const helper = require("../helper/index.js")
 const redis = require('redis')
-const client = redis.createClient()
+const client = redis.createClient(6379, process.env.REDIS_HOST)
 
 module.exports = {
     user_get: async (request, response) => {
