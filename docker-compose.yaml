@@ -1,89 +1,74 @@
-version: "3.7"
+version: '3.7'
+
 services:
-  redis:
-    image: 123160087:redis:latest
-    container_name: redis
-    networks: 
-      - testNet
-    deploy:
-      resources:
-        limits:
-          memory: 50M
-          cpus: '1'
-    command: redis-server --requirepass redispass123 /usr/local/etc/redis/redis.conf
-    environment:
+    backend:
+        build:
+            context: Express/
+        container_name: backend-express
+        ports:
+            - 3000:3000
+        networks:
+            - testNet
+        depends_on:
+            - postgres
+        environment:
+            - DB_HOST=postgres
+            - DB_USER=postgres
+            - DB_BASE=POS
+            - DB_PASS=postgres
+            - REDIS_HOST=redis
+        deploy:
+              replicas: 2
+			        resources:
+                limits:
+                    cpus: '1'
+                    memory: 200M
+                reservations:
+                    cpus: '1'
+                    memory: 200M
+    frontend:
+        build:
+            context: VUE/
+        container_name: frontend-vue
+        ports:
+            - 8080:8080
+            - 80:80
+        networks:
+            - testNet
+        environment:
+            - VUE_APP_BASE_URL=http://52.23.164.64:3000/api
+
+    postgres:
+        image: postgres
+        container_name: postgres
+        environment:
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+            - POSTGRES_DB=POS
+        ports:
+            - 5432:5432
+        networks:
+            - testNet
+        volumes:
+            - ./postgres-data:/var/lib/postgresql/data
+
+    redis:
+        image: redis
+        container_name: redis
+        environment:
             - REDIS_PORT=6379
             - REDIS_PASSWORD=redispass123
-    volumes: 
-      - /home/ubuntu/FullStack-Express-Vue-PostgreSQL/config/redis.conf:/usr/local/etc/redis/redis.conf
-    healthcheck:
-      test: ["CMD-SHELL", "redis-cli -h localhost"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+		ports:
+            - 6379:6379
+        networks:
+            - testNet
+        volumes:
+            - ./redis-data:/var/lib/redis
 
-  postgre:
-    image: testdb:latest
-    networks: 
-      - testNet
-    deploy:
-      resources:
-        limits:
-          memory: 200M
-          cpus: '1'
-    environment: 
-      POSTGRES_PASSWORD: Kamalkarazi15
-      POSTGRES_USER: super
-      POSTGRES_DB: POS
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+networks:
+    testNet:
+        driver: bridge
+volumes:
+    postgres-data:
+    redis-data:
 
-  backend:
-    image: express:latest
-    depends_on: 
-      - redis
-      - postgre
-    volumes:
-      - /home/ubuntu/log:/log
-    networks: 
-      - testNet
-    deploy:
-      replicas: 2
-      resources:
-        limits:
-          memory: 100M
-          cpus: '1'
-    environment: 
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-      REDIS_PASS: Kamalkarazi15
-      POSTGRE_USER: super
-      POSTGRE_PASSWORD: Kamalkarazi15
-      POSTGRE_DB: POS
-      POSTGRE_HOST: postgre
-      POSTGRE_PORT: 5432
-    healthcheck:
-      test: ["CMD-SHELL", "curl http://localhost:3000/api"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-  
-  webservice:
-    image: webservice
-    depends_on: 
-      - backend
-    ports: 
-      - "80:80"
-    networks: 
-      - testNet
-    deploy:
-      resources:
-        limits:
-          memory: 200M
-          cpus: '1'
-
-networks: 
-  testNet:

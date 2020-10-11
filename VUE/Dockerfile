@@ -1,13 +1,22 @@
-FROM node:lts-alpine as build-stage
-ENV VUE_APP_API http://localhost/api
-RUN npm i yarn
-WORKDIR /app
-COPY . .
-RUN yarn install
-RUN yarn build
+## NODE Config
+FROM node:12.4.0-alpine as builder
 
-FROM nginx:stable-alpine as production-stage
-COPY --from=build-stage /app/dist /usr/share/nginx/html
-COPY --from=build-stage /app/default /etc/nginx/conf.d/default.conf
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+WORKDIR /app
+
+COPY package.json package-lock.json ./
+COPY . /app
+COPY .env /app/.env
+
+RUN yarn \
+    && yarn build
+
+
+## NGINX Config
+FROM nginx:stable-alpine
+LABEL version="1.0"
+
+COPY nginx.conf /etc/nginx/nginx.conf
+
+WORKDIR /usr/share/nginx/html
+
+COPY --from=builder /app/dist/ .
