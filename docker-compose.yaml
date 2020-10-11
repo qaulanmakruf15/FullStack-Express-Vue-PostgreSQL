@@ -19,7 +19,7 @@ services:
             - REDIS_HOST=redis
         deploy:
               replicas: 2
-	      resources:
+	            resources:
                 limits:
                     cpus: '1'
                     memory: 200M
