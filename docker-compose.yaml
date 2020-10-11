@@ -19,7 +19,7 @@ services:
             - REDIS_HOST=redis
         deploy:
               replicas: 2
-			        resources:
+	      resources:
                 limits:
                     cpus: '1'
                     memory: 200M
@@ -58,7 +58,7 @@ services:
         environment:
             - REDIS_PORT=6379
             - REDIS_PASSWORD=redispass123
-		ports:
+        ports:
             - 6379:6379
         networks:
             - testNet
@@ -71,4 +71,3 @@ networks:
 volumes:
     postgres-data:
     redis-data:
-
